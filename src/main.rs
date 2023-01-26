@@ -7,6 +7,12 @@ fn main() {
     println!("{rocket}");
 }
 
+struct Constants;
+impl Constants {
+    pub const ACC_MULT: f32 = 0.8;
+    pub const DEC_MULT: f32 = 0.95;
+}
+
 #[derive(Debug)]
 enum Color {
     Black,
@@ -46,8 +52,16 @@ impl Rocket<Grounded> {
 }
 
 impl Rocket<Launched> {
-    pub fn accelerate(&mut self) {}
-    pub fn decelerate(&mut self) {}
+    pub fn accelerate(&mut self) {
+        self.update_weight(Constants::ACC_MULT);
+    }
+    pub fn decelerate(&mut self) {
+        self.update_weight(Constants::DEC_MULT);
+    }
+    fn update_weight(&mut self, mult: f32) {
+        let new = self.weight as f32 * mult;
+        self.weight = new as Kilograms;
+    }
 }
 
 impl<Stage> Rocket<Stage> {
