@@ -7,4 +7,12 @@ edition = "2021"
 name = "rocket"
 path = "bin/rocket.rs"
 
+[[bin]]
+name = "book"
+path = "bin/book.rs"
+
+[lib]
+name = "interfaces"
+path = "src/lib.rs"
+
 [dependencies]
