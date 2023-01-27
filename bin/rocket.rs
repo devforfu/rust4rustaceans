@@ -15,7 +15,6 @@ impl Constants {
 
 #[derive(Debug)]
 enum Color {
-    Black,
     White,
 }
 
