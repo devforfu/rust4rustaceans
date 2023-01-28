@@ -11,6 +11,10 @@ path = "bin/rocket.rs"
 name = "book"
 path = "bin/book.rs"
 
+[[bin]]
+name = "sealed"
+path = "bin/sealed.rs"
+
 [lib]
 name = "interfaces"
 path = "src/lib.rs"
