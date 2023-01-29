@@ -13,11 +13,7 @@ impl FromStr for Unit {
     type Err = ParseUnitError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        if let Some(unit) = parse_unit(s) {
-            Ok(unit)
-        } else {
-            Err(ParseUnitError)
-        }
+        parse_unit(s).ok_or(ParseUnitError)
     }
 }
 
