@@ -3,18 +3,6 @@ name = "design_interfaces"
 version = "0.1.0"
 edition = "2021"
 
-[[bin]]
-name = "rocket"
-path = "bin/rocket.rs"
-
-[[bin]]
-name = "book"
-path = "bin/book.rs"
-
-[[bin]]
-name = "sealed"
-path = "bin/sealed.rs"
-
 [lib]
 name = "interfaces"
 path = "src/lib.rs"
