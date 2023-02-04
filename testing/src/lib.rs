@@ -1,5 +1,18 @@
+//! A cycled buffer that rewrites its content when there is no more space in allocated vector.
+//!
+//! ```
+//! use std::io::Write;
+//! use std::ops::Deref;
+//! use testing::CycledBuffer;
+//! let mut buf = CycledBuffer::new(4);
+//! let _ = buf.write(&[1, 2]);
+//! assert_eq!(buf.deref(), &vec![1, 2, 0, 0]);
+//! let _ = buf.write(&[3, 4, 5, 6]);
+//! assert_eq!(buf.deref(), &vec![5, 6, 3, 4]);
+//! ```
 #![feature(stmt_expr_attributes)]
 use std::io::Write;
+use std::ops::Deref;
 
 pub struct CycledBuffer {
     buf: Vec<u8>,
@@ -9,13 +22,20 @@ pub struct CycledBuffer {
 }
 
 impl CycledBuffer {
-    fn new(size: usize) -> Self {
+    pub fn new(size: usize) -> Self {
         Self {
             buf: vec![0; size],
             ptr: 0,
             #[cfg(test)]
             total_bytes: 0,
         }
+    }
+}
+
+impl Deref for CycledBuffer {
+    type Target = Vec<u8>;
+    fn deref(&self) -> &Self::Target {
+        &self.buf
     }
 }
 
