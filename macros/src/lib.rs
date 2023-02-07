@@ -33,7 +33,7 @@ macro_rules! test_trait {
 $(
 #[cfg(test)]
 mod $name {
-    use super::test_clone;
+    use super::*;
     #[test]
     fn implements_clone() { test_clone::<$t>() }
 } )*
@@ -58,7 +58,8 @@ struct Flag(bool);
 
 clone_from_copy![Integer, Float, Flag];
 
-// test_trait! (
-//     Integer as integer_clone,
-//     Float as float_clone
-// );
+test_trait! (
+    Integer as integer_clone,
+    Float as float_clone,
+    Flag as flag_clone
+);
