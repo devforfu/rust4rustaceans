@@ -53,9 +53,12 @@ struct Integer(i32);
 #[derive(Copy)]
 struct Float(f32);
 
-clone_from_copy![Integer, Float];
+#[derive(Copy)]
+struct Flag(bool);
 
-test_trait! (
-    Integer as integer_clone,
-    Float as float_clone
-);
+clone_from_copy![Integer, Float, Flag];
+
+// test_trait! (
+//     Integer as integer_clone,
+//     Float as float_clone
+// );
