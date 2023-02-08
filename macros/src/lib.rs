@@ -63,3 +63,32 @@ test_trait! (
     Float as float_clone,
     Flag as flag_clone
 );
+
+macro_rules! dict {
+    ($( $key: expr => $val: expr ),*) => {{
+        let mut map = ::std::collections::HashMap::new();
+        $(
+            map.insert($key, $val);
+        )*
+        map
+    }}
+}
+
+#[cfg(test)]
+mod test_dict {
+    use std::collections::HashMap;
+
+    #[test]
+    fn test_dict_literal() {
+        let hashmap = dict![
+            "Alice" => 1,
+            "Bob" => 2,
+            "Chris" => 3
+        ];
+
+        let mut result: Vec<(&str, i32)> = hashmap.into_iter().collect();
+        result.sort();
+
+        assert_eq!(result, vec![("Alice", 1), ("Bob", 2), ("Chris", 3)]);
+    }
+}
