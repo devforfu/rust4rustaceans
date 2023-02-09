@@ -92,3 +92,25 @@ mod test_dict {
         assert_eq!(result, vec![("Alice", 1), ("Bob", 2), ("Chris", 3)]);
     }
 }
+
+macro_rules! name_as_debug {
+    ($t:ty) => {
+        impl ::core::fmt::Debug for $t {
+            fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+                ::core::write!(f, ::core::stringify!($t))
+            }
+        }
+    };
+}
+
+#[cfg(test)]
+mod test_name_as_debug {
+    use super::*;
+
+    #[test]
+    fn test_debug_implemented_for_type() {
+        struct NewType(u32);
+        name_as_debug!(NewType);
+        assert_eq!("NewType", format!("{:?}", NewType(0)));
+    }
+}
