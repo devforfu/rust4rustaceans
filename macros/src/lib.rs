@@ -76,7 +76,7 @@ macro_rules! dict {
 
 #[cfg(test)]
 mod test_dict {
-    use std::collections::HashMap;
+    
 
     #[test]
     fn test_dict_literal() {
@@ -105,7 +105,7 @@ macro_rules! name_as_debug {
 
 #[cfg(test)]
 mod test_name_as_debug {
-    use super::*;
+    
 
     #[test]
     fn test_debug_implemented_for_type() {
