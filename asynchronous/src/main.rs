@@ -1,9 +1,11 @@
 use std::{fs, path::PathBuf};
 
 fn main() {
-    let glob = Glob::new(PathBuf::from("/Users/ck"), false);
-    for path in glob.into_iter() {
-        println!("{path:?}");
+    if let Ok(home_dir) = std::env::var("HOME") {
+        let glob = Glob::new(PathBuf::from(home_dir), false);
+        for path in glob.into_iter() {
+            println!("{path:?}");
+        }
     }
 }
 
