@@ -1,25 +1,43 @@
-use std::future::Future;
-use std::pin::Pin;
-use std::task::{Context, Poll};
+use std::{fs, path::PathBuf};
 
-use futures::executor;
-
-struct Data(Vec<u8>);
-
-impl Future for Data {
-    type Output = Vec<u8>;
-
-    fn poll(self: Pin<&mut Self>, _: &mut Context<'_>) -> Poll<Self::Output> {
-        Poll::Ready(self.0.clone())
+fn main() {
+    let glob = Glob::new(PathBuf::from("/Users/ck"), false);
+    for path in glob.into_iter() {
+        println!("{path:?}");
     }
 }
 
-fn main() {
-    let future_data = async {
-        Data(vec![1, 2, 3]).await
-    };
+pub struct Glob {
+    stack: Vec<PathBuf>,
+    recursive: bool,
+    level: usize,
+}
 
-    let values = executor::block_on(future_data);
+impl Glob {
+    fn new(root: PathBuf, recursive: bool) -> Self { Self {
+        stack: vec![root], recursive, level: 0
+    } }
+}
 
-    println!("Awaited values: {values:?}");
+impl Iterator for Glob {
+    type Item = PathBuf;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.stack.is_empty() { return None }
+
+        let path = self.stack.swap_remove(0);
+
+        if path.is_dir() && (self.recursive || self.level <= 0) {
+            if let Ok(read_dir) = fs::read_dir(path.clone()) {
+                for filename in read_dir {
+                    if let Ok(filename) = filename {
+                        self.stack.push(filename.path());
+                    }
+                }
+                self.level += 1;
+            }
+        }
+
+        Some(path)
+    }
 }
