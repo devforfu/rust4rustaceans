@@ -11,7 +11,10 @@ mod sealed {
     impl<T> Sealed for T where T: Display {}
 }
 
-impl<T> Print for T where T: Display {
+impl<T> Print for T
+where
+    T: Display,
+{
     fn print(&self) {
         print!("{self}");
     }
@@ -20,4 +23,3 @@ impl<T> Print for T where T: Display {
         println!("{self}")
     }
 }
-

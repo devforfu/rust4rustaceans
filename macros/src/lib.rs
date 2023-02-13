@@ -2,7 +2,12 @@ use std::any::type_name;
 use std::fmt::Debug;
 
 fn test_inner<T: Debug>(init: T, flag: bool) {
-    println!("type={:?}, init={:?}, flag={:?}", type_name::<T>(), init, flag);
+    println!(
+        "type={:?}, init={:?}, flag={:?}",
+        type_name::<T>(),
+        init,
+        flag
+    );
 }
 
 fn test_clone<T: Clone>() {}
@@ -39,7 +44,7 @@ mod $name {
 } )*
 } }
 
-test_battery! (
+test_battery!(
     u8 as u8_test,
     u16 as u16_test,
     u32 as u32_test,
@@ -58,7 +63,7 @@ struct Flag(bool);
 
 clone_from_copy![Integer, Float, Flag];
 
-test_trait! (
+test_trait!(
     Integer as integer_clone,
     Float as float_clone,
     Flag as flag_clone
@@ -76,7 +81,6 @@ macro_rules! dict {
 
 #[cfg(test)]
 mod test_dict {
-    
 
     #[test]
     fn test_dict_literal() {
@@ -105,7 +109,6 @@ macro_rules! name_as_debug {
 
 #[cfg(test)]
 mod test_name_as_debug {
-    
 
     #[test]
     fn test_debug_implemented_for_type() {

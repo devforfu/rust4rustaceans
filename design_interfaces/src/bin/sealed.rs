@@ -1,3 +1,4 @@
+use interfaces::sealed::Print;
 /// An example of a "sealed" trait that cannot be implemented outside crate.
 ///
 /// The following code fails, as the trait is already implemented.
@@ -19,10 +20,9 @@
 /// }
 /// ```
 use std::fmt::{self, Display};
-use interfaces::sealed::Print;
 
 struct Bag<T> {
-    vec: Vec<T>
+    vec: Vec<T>,
 }
 
 impl<T> Bag<T> {

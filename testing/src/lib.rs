@@ -47,7 +47,9 @@ impl Write for CycledBuffer {
         }
         let n = buf.len();
         #[cfg(test)]
-        { self.total_bytes += n; }
+        {
+            self.total_bytes += n;
+        }
         Ok(n)
     }
 

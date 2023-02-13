@@ -26,7 +26,6 @@ impl Deref for PhoneBook {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -38,4 +37,3 @@ mod tests {
         assert_eq!(book.len(), 1);
     }
 }
-

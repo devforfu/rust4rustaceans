@@ -16,16 +16,22 @@ pub struct Glob {
 }
 
 impl Glob {
-    fn new(root: PathBuf, recursive: bool) -> Self { Self {
-        stack: vec![root], recursive, level: 0
-    } }
+    fn new(root: PathBuf, recursive: bool) -> Self {
+        Self {
+            stack: vec![root],
+            recursive,
+            level: 0,
+        }
+    }
 }
 
 impl Iterator for Glob {
     type Item = PathBuf;
 
     fn next(&mut self) -> Option<Self::Item> {
-        if self.stack.is_empty() { return None }
+        if self.stack.is_empty() {
+            return None;
+        }
 
         let path = self.stack.swap_remove(0);
 

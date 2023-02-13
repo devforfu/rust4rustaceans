@@ -19,10 +19,13 @@ impl FromStr for Unit {
 
 fn parse_unit(s: &str) -> Option<Unit> {
     #[derive(PartialEq)]
-    enum State {Digit, Unit}
+    enum State {
+        Digit,
+        Unit,
+    }
 
     let mut curr = State::Digit;
-    let mut num: i32 = 0; 
+    let mut num: i32 = 0;
     let mut unit = String::new();
 
     for ch in s.to_lowercase().bytes() {
@@ -31,14 +34,14 @@ fn parse_unit(s: &str) -> Option<Unit> {
                 if curr == State::Unit {
                     return None;
                 }
-                num += 10*((ch - b'0') as i32)
-            },
+                num += 10 * ((ch - b'0') as i32)
+            }
             b'a'..=b'z' => {
                 if curr == State::Digit {
                     curr = State::Unit;
                 }
-                unit.push(ch as char); 
-            },
+                unit.push(ch as char);
+            }
             _ => (),
         }
     }
@@ -47,7 +50,7 @@ fn parse_unit(s: &str) -> Option<Unit> {
         "g" => Some(Unit::Grams(num)),
         "kg" => Some(Unit::Kilograms(num)),
         "t" | "tn" => Some(Unit::Tonnes(num)),
-        _ => return None, 
+        _ => return None,
     }
 }
 
