@@ -1,11 +1,15 @@
+use futures::{executor::block_on, StreamExt};
+
 use std::{fs, path::PathBuf};
 
 fn main() {
     if let Ok(home_dir) = std::env::var("HOME") {
-        let glob = Glob::new(PathBuf::from(home_dir), false);
-        for path in glob.into_iter() {
-            println!("{path:?}");
-        }
+        block_on(async {
+            let mut glob = Glob::new(PathBuf::from(home_dir), false);
+            while let Some(path) = glob.next() {
+                println!("{:?}", path);
+            }
+        });
     }
 }
 
