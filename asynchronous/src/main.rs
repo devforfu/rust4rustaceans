@@ -1,12 +1,11 @@
-use futures::{executor::block_on, StreamExt};
-
 use std::{fs, path::PathBuf};
+use futures::{executor::block_on, StreamExt, TryStreamExt};
 
 fn main() {
     if let Ok(home_dir) = std::env::var("HOME") {
         block_on(async {
-            let mut glob = Glob::new(PathBuf::from(home_dir), false);
-            while let Some(path) = glob.next() {
+            let mut glob = AsyncGlob::new(PathBuf::from(home_dir), false);
+            while let Some(path) = glob.next().await {
                 println!("{:?}", path);
             }
         });
@@ -45,6 +44,39 @@ impl Iterator for Glob {
                     if let Ok(filename) = filename {
                         self.stack.push(filename.path());
                     }
+                }
+                self.level += 1;
+            }
+        }
+
+        Some(path)
+    }
+}
+
+pub struct AsyncGlob {
+    stack: Vec<PathBuf>,
+    recursive: bool,
+    level: usize,
+}
+
+impl AsyncGlob {
+    fn new(root: PathBuf, recursive: bool) -> Self {
+        Self {
+            stack: vec![root],
+            recursive,
+            level: 0,
+        }
+    }
+
+    async fn next(&mut self) -> Option<PathBuf> {
+        if self.stack.is_empty() { return None; }
+
+        let path = self.stack.swap_remove(0);
+
+        if path.is_dir() && (self.recursive || self.level <= 0) {
+            if let Ok(mut entries) = async_fs::read_dir(path.clone()).await {
+                while let Ok(Some(entry)) = entries.try_next().await {
+                    self.stack.push(entry.path());
                 }
                 self.level += 1;
             }
