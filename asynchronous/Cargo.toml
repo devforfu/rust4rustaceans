@@ -3,6 +3,15 @@ name = "asynchronous"
 version = "0.1.0"
 edition = "2021"
 
+[lib]
+name = "async_lib"
+path = "src/lib.rs"
+
+[[bin]]
+name = "server"
+path = "bin/server.rs"
+
 [dependencies]
 async-fs = "1.6"
+async-std = "1.12"
 futures = "*"

@@ -1,16 +1,16 @@
 use std::{fs, path::PathBuf};
 use futures::{executor::block_on, StreamExt, TryStreamExt};
 
-fn main() {
-    if let Ok(home_dir) = std::env::var("HOME") {
-        block_on(async {
-            let mut glob = AsyncGlob::new(PathBuf::from(home_dir), false);
-            while let Some(path) = glob.next().await {
-                println!("{:?}", path);
-            }
-        });
-    }
-}
+// fn main() {
+//     if let Ok(home_dir) = std::env::var("HOME") {
+//         block_on(async {
+//             let mut glob = AsyncGlob::new(PathBuf::from(home_dir), false);
+//             while let Some(path) = glob.next().await {
+//                 println!("{:?}", path);
+//             }
+//         });
+//     }
+// }
 
 pub struct Glob {
     stack: Vec<PathBuf>,
