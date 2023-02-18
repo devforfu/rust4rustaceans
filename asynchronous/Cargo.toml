@@ -11,6 +11,10 @@ path = "src/lib.rs"
 name = "server"
 path = "bin/server.rs"
 
+[[bin]]
+name = "glob"
+path = "bin/glob.rs"
+
 [dependencies]
 async-fs = "1.6"
 async-std = "1.12"
